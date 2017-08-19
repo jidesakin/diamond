@@ -33,7 +33,7 @@ def register(request):
                 user.save()
                 user = authenticate(username = username, password = password)
                 login(request, user)
-                return HttpResponseRedirect('/')
+                return HttpResponseRedirect('/polls/profile/')
             else:
                 raise forms.ValidationError("Oops! Something went wrong. Username or email already exist")
 
@@ -42,5 +42,16 @@ def register(request):
     return render(request, 'registration/register.html', {'form': form})
 
 def profile(request):
-    
-    return render(request, 'profile/index.html', {'data'});
+    if request.user.is_authenticated():
+        user = request.user
+        return render(request, 'profile/index.html', {'user': user})
+    else:
+        return
+
+
+def edit_profile(request): 
+    if request.user.is_authenticated():
+        user = request.user
+        return render(request, 'profile/edit.html', {'user': user})
+    else:
+        return   
